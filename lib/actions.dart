@@ -5,7 +5,9 @@ Future<void> createNote(String title, String content) async {
     try{
     final response = await Supabase.instance.client
     .from('notes')
-    .insert({'title': title, 'content': content});
+    .insert({'title': title,
+    'content': content});
+    return response;
     } catch (e) {
         print('Failed: $e');
     }
@@ -17,12 +19,25 @@ Future<List<Map<String, dynamic>>> fetchNotes() async {
     final response = await Supabase.instance.client
     .from('notes')
     .select();
+    return response;
     }catch (e) {
-       print('Failed: $e');
+      print('Failed: $e');
     }
     return [];
 }
 
-class UpdateNote {
-
+Future<void> updateNote(String id, String newTitle, String newContent) async{
+ try{
+  final response = await Supabase.instance.client
+  .from('notes')
+  .update({
+    'title': newTitle,
+    'content': newContent,
+    'LastUpdated': DateTime.now().toIso8601String()
+  })
+  .eq('id', id);
+  return response;
+ }catch(e){
+  throw Exception('Error Updating Note: $e');
+ }
 }

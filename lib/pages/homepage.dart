@@ -19,6 +19,12 @@ class _HomepageState extends State<Homepage> {
     loadNotes();
   }
 
+  void dispose(){
+    titleController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
+
 
   void loadNotes() async {
     final notes = await fetchNotes();
@@ -54,8 +60,12 @@ class _HomepageState extends State<Homepage> {
                         height: 20,
                       ),
                       TextButton
-                      (onPressed: (){
-                        createNote(titleController.text, contentController.text);
+                      (onPressed: () async{
+                        await createNote(titleController.text, contentController.text);
+                        titleController.clear();
+                        contentController.clear();
+                        Navigator.pop(context);
+                        loadNotes();
                       },
                       child: Text('Create Note')
                      ),
@@ -71,9 +81,18 @@ class _HomepageState extends State<Homepage> {
         itemCount: _notes.length,
         itemBuilder: (context, index) {
           final note = _notes[index];
-          return ListTile(
-            title: Text(note['title']),
-            subtitle: Text(note['content']),
+          return Card(
+            child: ListTile(
+              trailing: IconButton
+              (onPressed: () async{
+                
+                 
+                
+              },
+              icon: Icon(Icons.edit)),
+              title: Text(note['title']),
+              subtitle: Text(note['content']),
+            ),
           );
         }
       ),
