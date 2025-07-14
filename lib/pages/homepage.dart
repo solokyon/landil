@@ -11,18 +11,15 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
+  final TextEditingController idController = TextEditingController();
+  final TextEditingController updatetitleController = TextEditingController();
+  final TextEditingController updatecontentController = TextEditingController();
 
   List<Map<String, dynamic>> _notes = []; 
 
   void initState(){
     super.initState();
     loadNotes();
-  }
-
-  void dispose(){
-    titleController.dispose();
-    contentController.dispose();
-    super.dispose();
   }
 
 
@@ -60,11 +57,8 @@ class _HomepageState extends State<Homepage> {
                         height: 20,
                       ),
                       TextButton
-                      (onPressed: () async{
-                        await createNote(titleController.text, contentController.text);
-                        titleController.clear();
-                        contentController.clear();
-                        Navigator.pop(context);
+                      (onPressed: () async {
+                        createNote(titleController.text, contentController.text);
                         loadNotes();
                       },
                       child: Text('Create Note')
@@ -83,13 +77,53 @@ class _HomepageState extends State<Homepage> {
           final note = _notes[index];
           return Card(
             child: ListTile(
-              trailing: IconButton
-              (onPressed: () async{
-                
-                 
-                
+              trailing: IconButton(onPressed: (){
+                idController.text = note['id'].toString();
+                updatetitleController.text = note['title'];
+                updatecontentController.text = note['content'];
+                showDialog(context: context,
+                builder: (context) => Dialog(
+                  child:Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      TextField(  
+                        controller: idController,
+                        readOnly: true,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: updatetitleController,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: updatecontentController,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextButton
+                      (onPressed: () async {
+                        updateNote(idController.text,
+                        updatetitleController.text,
+                        updatecontentController.text
+                      );
+                        loadNotes();
+                      },
+                      child: Text('Update Note')
+                     ),
+                    ],
+                  ),
+                ),
+                )
+                );
               },
-              icon: Icon(Icons.edit)),
+              icon: Icon(Icons.edit)
+              ),
               title: Text(note['title']),
               subtitle: Text(note['content']),
             ),

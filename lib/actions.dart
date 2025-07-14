@@ -41,3 +41,8 @@ Future<void> updateNote(String id, String newTitle, String newContent) async{
   throw Exception('Error Updating Note: $e');
  }
 }
+
+/*
+Find a way to have a usable update, when the update icon is pressed the data from that card should still be intact
+the update should automatically know which data id you pressed when you click the update button
+*/
