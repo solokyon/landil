@@ -77,7 +77,8 @@ class _HomepageState extends State<Homepage> {
           final note = _notes[index];
           return Card(
             child: ListTile(
-              trailing: Row(
+              trailing: Wrap(
+                spacing: -16,
                 children: [
                   IconButton(onPressed: (){
                     idController.text = note['id'].toString();
@@ -128,13 +129,51 @@ class _HomepageState extends State<Homepage> {
                   ),
 
                   IconButton(onPressed: (){
-                    showDialog(
-                    context: context,
+                    idController.text = note['id'].toString();
+                    updatetitleController.text = note['title'];
+                    updatecontentController.text = note['content'];
+                    showDialog(context: context,
                     builder: (context) => Dialog(
-
+                      child:Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          TextField(  
+                            controller: idController,
+                            readOnly: true,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            controller: updatetitleController,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            controller: updatecontentController,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextButton
+                          (onPressed: () async {
+                            updateNote(idController.text,
+                            updatetitleController.text,
+                            updatecontentController.text
+                          );
+                            loadNotes();
+                          },
+                          child: Text('Delete Note')
+                         ),
+                        ],
+                      ),
+                    ),
                     )
                     );
-                  }, icon: Icon(Icons.delete)
+                  },
+                  icon: Icon(Icons.edit)
                   ),
                 ],
               ),
