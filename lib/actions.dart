@@ -1,34 +1,33 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+  final response = Supabase.instance.client;
+
 
 Future<void> createNote(String title, String content) async {
     try{
-    final response = await Supabase.instance.client
+    response
     .from('notes')
     .insert({'title': title,
     'content': content});
-    return response;
     } catch (e) {
-        print('Failed: $e');
+        throw Exception('Error Updating Note: $e');
     }
-    print('$title');
 }
 
 Future<List<Map<String, dynamic>>> fetchNotes() async {
     try{
-    final response = await Supabase.instance.client
+    response
     .from('notes')
     .select();
-    return response;
     }catch (e) {
-      print('Failed: $e');
+      throw Exception('Error Updating Note: $e');
     }
     return [];
 }
 
 Future<void> updateNote(String id, String newTitle, String newContent) async{
  try{
-  final response = await Supabase.instance.client
+  response
   .from('notes')
   .update({
     'title': newTitle,
@@ -36,13 +35,22 @@ Future<void> updateNote(String id, String newTitle, String newContent) async{
     'LastUpdated': DateTime.now().toIso8601String()
   })
   .eq('id', id);
-  return response;
  }catch(e){
   throw Exception('Error Updating Note: $e');
  }
 }
 
-/*
-Find a way to have a usable update, when the update icon is pressed the data from that card should still be intact
-the update should automatically know which data id you pressed when you click the update button
-*/
+Future<void> deleteNote(String id) async {
+  try{
+    response
+    .from('notes')
+    .delete()
+    .eq('id', id);
+  }catch(e){
+    throw Exception('Error Updating Note: $e');
+  }
+}
+
+//add delete feature
+//add trash feature where you can recover your old notes within 30 days
+

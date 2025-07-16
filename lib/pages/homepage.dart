@@ -77,52 +77,66 @@ class _HomepageState extends State<Homepage> {
           final note = _notes[index];
           return Card(
             child: ListTile(
-              trailing: IconButton(onPressed: (){
-                idController.text = note['id'].toString();
-                updatetitleController.text = note['title'];
-                updatecontentController.text = note['content'];
-                showDialog(context: context,
-                builder: (context) => Dialog(
-                  child:Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      TextField(  
-                        controller: idController,
-                        readOnly: true,
+              trailing: Row(
+                children: [
+                  IconButton(onPressed: (){
+                    idController.text = note['id'].toString();
+                    updatetitleController.text = note['title'];
+                    updatecontentController.text = note['content'];
+                    showDialog(context: context,
+                    builder: (context) => Dialog(
+                      child:Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          TextField(  
+                            controller: idController,
+                            readOnly: true,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            controller: updatetitleController,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            controller: updatecontentController,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextButton
+                          (onPressed: () async {
+                            updateNote(idController.text,
+                            updatetitleController.text,
+                            updatecontentController.text
+                          );
+                            loadNotes();
+                          },
+                          child: Text('Update Note')
+                         ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextField(
-                        controller: updatetitleController,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextField(
-                        controller: updatecontentController,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextButton
-                      (onPressed: () async {
-                        updateNote(idController.text,
-                        updatetitleController.text,
-                        updatecontentController.text
-                      );
-                        loadNotes();
-                      },
-                      child: Text('Update Note')
-                     ),
-                    ],
+                    ),
+                    )
+                    );
+                  },
+                  icon: Icon(Icons.edit)
                   ),
-                ),
-                )
-                );
-              },
-              icon: Icon(Icons.edit)
+
+                  IconButton(onPressed: (){
+                    showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+
+                    )
+                    );
+                  }, icon: Icon(Icons.delete)
+                  ),
+                ],
               ),
               title: Text(note['title']),
               subtitle: Text(note['content']),
