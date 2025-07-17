@@ -17,6 +17,7 @@ class _HomepageState extends State<Homepage> {
 
   List<Map<String, dynamic>> _notes = []; 
 
+  @override
   void initState(){
     super.initState();
     loadNotes();
@@ -25,6 +26,7 @@ class _HomepageState extends State<Homepage> {
 
   void loadNotes() async {
     final notes = await fetchNotes();
+    print('Fetched notes: $notes');
     setState(() {
       _notes = notes;
     });
@@ -173,7 +175,7 @@ class _HomepageState extends State<Homepage> {
                     )
                     );
                   },
-                  icon: Icon(Icons.edit)
+                  icon: Icon(Icons.delete)
                   ),
                 ],
               ),

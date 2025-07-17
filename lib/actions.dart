@@ -10,19 +10,19 @@ Future<void> createNote(String title, String content) async {
     .insert({'title': title,
     'content': content});
     } catch (e) {
-        throw Exception('Error Updating Note: $e');
+        throw Exception('Error Adding Note: $e');
     }
 }
 
 Future<List<Map<String, dynamic>>> fetchNotes() async {
     try{
-    response
+     final response = await Supabase.instance.client
     .from('notes')
     .select();
+    return List<Map<String, dynamic>>.from(response);
     }catch (e) {
-      throw Exception('Error Updating Note: $e');
+      throw Exception('Error Fetching Note: $e');
     }
-    return [];
 }
 
 Future<void> updateNote(String id, String newTitle, String newContent) async{
@@ -47,7 +47,7 @@ Future<void> deleteNote(String id) async {
     .delete()
     .eq('id', id);
   }catch(e){
-    throw Exception('Error Updating Note: $e');
+    throw Exception('Error Deleting Note: $e');
   }
 }
 
